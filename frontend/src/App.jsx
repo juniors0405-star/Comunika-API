@@ -4,6 +4,11 @@ import { useState } from "react";
 // Importamos los estilos de la aplicación
 import "./App.css";
 
+// Importamos los módulos de Comunika
+import CreateTopic from "./CreateTopic";
+import CreateResponse from "./CreateResponse";
+import Profile from "./Profile";
+
 function App() {
 
   // Estado para almacenar el nombre de usuario
@@ -12,183 +17,208 @@ function App() {
   // Estado para almacenar la contraseña
   const [password, setPassword] = useState("");
 
-  // Estado para mostrar el resultado del inicio de sesión
+  // Estado para mostrar mensajes
   const [mensaje, setMensaje] = useState("");
-// Estado para saber si el usuario inició sesión correctamente
-const [autenticado, setAutenticado] = useState(false);
-  // Función que se ejecuta cuando el usuario envía el formulario
+
+  // Estado para saber si el usuario inició sesión correctamente
+  const [autenticado, setAutenticado] = useState(false);
+
+  // Función para iniciar sesión
   const iniciarSesion = async (e) => {
 
-    // Evitamos que el formulario recargue la página
     e.preventDefault();
 
     try {
 
-      // Enviamos los datos del usuario al servicio de login del backend
-const respuesta = await fetch("https://comunika-api.onrender.com/login", {
+      // Enviamos los datos al Back-End
+      const respuesta = await fetch(
+        "https://comunika-api.onrender.com/login",
+        {
+          method: "POST",
 
-        // Indicamos que utilizaremos el método POST
-        method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
 
-        // Indicamos que la información será enviada en formato JSON
-        headers: {
-          "Content-Type": "application/json",
-        },
-
-        // Convertimos los datos del formulario a formato JSON
-        body: JSON.stringify({
-          usuario: usuario,
-          password: password,
-        }),
-      });
-
-      // Convertimos la respuesta del servidor a formato JSON
-      const datos = await respuesta.json();
-
-      // Verificamos si la respuesta fue exitosa
-      if (respuesta.ok) {
-  // Indicamos que la autenticación fue correcta
-  setAutenticado(true);
-        // Mostramos el mensaje enviado por el backend
-        setMensaje(datos.mensaje);
-
-      } else {
-
-        // Mostramos el mensaje de error enviado por el backend
-        setMensaje(datos.error);
-      }
-
-    } catch (error) {
-
-      // Mostramos un mensaje si no se puede conectar con el backend
-      setMensaje("No se pudo conectar con el servidor");
-    }
-  };
-// Función para registrar un nuevo usuario
-  const registrarUsuario = async (e) => {
-
-    // Evitamos que el formulario recargue la página
-    e.preventDefault();
-
-    try {
-
-      // Enviamos los datos al servicio de registro del backend
-const respuesta = await fetch("https://comunika-api.onrender.com/registro", {
-
-        // Utilizamos el método POST
-        method: "POST",
-
-        // Indicamos que enviaremos información en formato JSON
-        headers: {
-          "Content-Type": "application/json",
-        },
-
-        // Enviamos usuario y contraseña
-        body: JSON.stringify({
-          usuario: usuario,
-          password: password,
-        }),
-      });
+          body: JSON.stringify({
+            usuario: usuario,
+            password: password,
+          }),
+        }
+      );
 
       // Convertimos la respuesta a JSON
       const datos = await respuesta.json();
 
-      // Mostramos el resultado del registro
+      // Verificamos si el login fue correcto
       if (respuesta.ok) {
+
+        setAutenticado(true);
         setMensaje(datos.mensaje);
+
       } else {
+
         setMensaje(datos.error);
       }
 
     } catch (error) {
 
-      // Mostramos un mensaje si no hay conexión con el backend
       setMensaje("No se pudo conectar con el servidor");
     }
   };
-  // Interfaz visual de la aplicación
+
+  // Función para registrar un nuevo usuario
+  const registrarUsuario = async (e) => {
+
+    e.preventDefault();
+
+    try {
+
+      // Enviamos los datos al Back-End
+      const respuesta = await fetch(
+        "https://comunika-api.onrender.com/registro",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+          },
+
+          body: JSON.stringify({
+            usuario: usuario,
+            password: password,
+          }),
+        }
+      );
+
+      // Convertimos la respuesta a JSON
+      const datos = await respuesta.json();
+
+      // Mostramos el resultado
+      if (respuesta.ok) {
+
+        setMensaje(datos.mensaje);
+
+      } else {
+
+        setMensaje(datos.error);
+      }
+
+    } catch (error) {
+
+      setMensaje("No se pudo conectar con el servidor");
+    }
+  };
+
+  // Función para cerrar sesión
+  const cerrarSesion = () => {
+
+    setAutenticado(false);
+    setUsuario("");
+    setPassword("");
+    setMensaje("Sesión cerrada correctamente");
+  };
+
   return (
     <div className="app">
 
-      {/* Encabezado principal de Comunika */}
+      {/* Encabezado principal */}
       <header className="encabezado">
 
-        {/* Nombre del proyecto */}
         <h1>COMUNIKA</h1>
 
-        {/* Descripción del proyecto */}
         <p>Foro Web Educativo</p>
 
       </header>
 
-{/* Contenido principal */}
-<main className="contenido">
+      {/* Contenido principal */}
+      <main className="contenido">
 
-  {/* Verificamos si el usuario ya inició sesión */}
-  {autenticado ? (
+        {autenticado ? (
 
-    /* Pantalla que se muestra cuando el usuario está autenticado */
-    <section className="bienvenida">
+          /* ==================================================
+             PANTALLA DESPUÉS DEL INICIO DE SESIÓN
+             ================================================== */
 
-      {/* Mostramos la pantalla de bienvenida */}
-      <h2>Bienvenido a Comunika</h2>
+          <section className="bienvenida">
 
-      {/* Confirmamos que el inicio de sesión fue correcto */}
-      <p>Has iniciado sesión correctamente.</p>
+            <h2>Bienvenido a Comunika</h2>
 
-    </section>
+            <p>Has iniciado sesión correctamente.</p>
 
-  ) : (
+            {/* Botón para cerrar sesión */}
+            <button onClick={cerrarSesion}>
+              Cerrar sesión
+            </button>
 
-    /* Pantalla que se muestra cuando el usuario NO está autenticado */
-    <section className="bienvenida">
+            {/* Módulo para crear temas */}
+            <CreateTopic />
 
-      {/* Título de la pantalla */}
-      <h2>Iniciar sesión</h2>
+            {/* Módulo para responder publicaciones */}
+            <CreateResponse />
 
-      {/* Formulario de autenticación */}
-      <form onSubmit={iniciarSesion}>
+            {/* Módulo para gestionar el perfil */}
+            <Profile cerrarSesion={cerrarSesion} />
 
-        {/* Campo para el usuario */}
-        <label>Usuario</label>
+          </section>
 
-        <input
-          type="text"
-          placeholder="Ingrese su usuario"
-          value={usuario}
-          onChange={(e) => setUsuario(e.target.value)}
-        />
+        ) : (
 
-        {/* Campo para la contraseña */}
-        <label>Contraseña</label>
+          /* ==================================================
+             PANTALLA DE INICIO DE SESIÓN
+             ================================================== */
 
-        <input
-          type="password"
-          placeholder="Ingrese su contraseña"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+          <section className="bienvenida">
 
-        {/* Botón para iniciar sesión */}
-        <button type="submit">
-          Iniciar sesión
-        </button>
+            <h2>Iniciar sesión</h2>
 
-        {/* Botón para registrar un usuario */}
-        <button type="button" onClick={registrarUsuario}>
-          Registrarse
-        </button>
+            {/* Formulario de autenticación */}
+            <form onSubmit={iniciarSesion}>
 
-      </form>
+              {/* Campo de usuario */}
+              <label>Usuario</label>
 
-      {/* Mostramos el mensaje solamente si existe */}
-      {mensaje && <p>{mensaje}</p>}
+              <input
+                type="text"
+                placeholder="Ingrese su usuario"
+                value={usuario}
+                onChange={(e) => setUsuario(e.target.value)}
+              />
 
-    </section>
+              {/* Campo de contraseña */}
+              <label>Contraseña</label>
 
-  )}
+              <input
+                type="password"
+                placeholder="Ingrese su contraseña"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
 
-</main>
+              {/* Botón iniciar sesión */}
+              <button type="submit">
+                Iniciar sesión
+              </button>
+
+              {/* Botón registrar */}
+              <button
+                type="button"
+                onClick={registrarUsuario}
+              >
+                Registrarse
+              </button>
+
+            </form>
+
+            {/* Mensaje del sistema */}
+            {mensaje && <p>{mensaje}</p>}
+
+          </section>
+
+        )}
+
+      </main>
+
       {/* Pie de página */}
       <footer>
         <p>Comunika © 2026</p>
@@ -198,5 +228,5 @@ const respuesta = await fetch("https://comunika-api.onrender.com/registro", {
   );
 }
 
-// Exportamos el componente principal de React
+// Exportamos el componente principal
 export default App;
