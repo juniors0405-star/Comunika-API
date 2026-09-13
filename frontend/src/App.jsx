@@ -25,7 +25,7 @@ const [autenticado, setAutenticado] = useState(false);
     try {
 
       // Enviamos los datos del usuario al servicio de login del backend
-      const respuesta = await fetch("http://localhost:3000/login", {
+const respuesta = await fetch("https://comunika-api.onrender.com/login", {
 
         // Indicamos que utilizaremos el método POST
         method: "POST",
@@ -73,7 +73,7 @@ const [autenticado, setAutenticado] = useState(false);
     try {
 
       // Enviamos los datos al servicio de registro del backend
-      const respuesta = await fetch("http://localhost:3000/registro", {
+const respuesta = await fetch("https://comunika-api.onrender.com/registro", {
 
         // Utilizamos el método POST
         method: "POST",
