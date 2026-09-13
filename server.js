@@ -24,7 +24,7 @@ app.use(cors({
     "http://localhost:5173",
     "http://localhost:5174",
     "https://comunika-api.vercel.app"
-]
+],
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type"]
 }));
