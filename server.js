@@ -20,7 +20,11 @@ app.use(express.json());
 // Configuramos CORS para permitir la comunicación
 // entre el frontend de React y el backend de Express
 app.use(cors({
-    origin: ["http://localhost:5173", "https://comunika-api.vercel.app"],
+    origin: [
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "https://comunika-api.vercel.app"
+]
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type"]
 }));
