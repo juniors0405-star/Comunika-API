@@ -64,7 +64,7 @@ async function iniciarServidor() {
 app.get("/usuarios", async (req, res) => {
   try {
     const db = client.db("comunika");
-    const usuarios = await db.collection("users").find().toArray();
+    const usuarios = await db.collection("Usuarios").find().toArray();
 
     res.json(usuarios);
   } catch (error) {
@@ -80,7 +80,7 @@ app.post("/usuarios", async (req, res) => {
       email: req.body.email
     };
 
-    const resultado = await db.collection("users").insertOne(nuevoUsuario);
+    const resultado = await db.collection("Usuarios").insertOne(nuevoUsuario);
 
     res.status(201).json({
       mensaje: "Usuario creado correctamente",
@@ -101,7 +101,7 @@ app.post("/registro", async (req, res) => {
         const { usuario, password } = req.body;
 
         // Verificamos si el usuario ya existe
-        const usuarioExistente = await db.collection("users").findOne({ usuario });
+        const usuarioExistente = await db.collection("Usuarios").findOne({ usuario });
 
         if (usuarioExistente) {
             return res.status(400).json({
@@ -110,7 +110,7 @@ app.post("/registro", async (req, res) => {
         }
 
         // Guardamos el nuevo usuario
-        await db.collection("users").insertOne({
+        await db.collection("Usuarios").insertOne({
             usuario: usuario,
             password: password
         });
@@ -140,7 +140,7 @@ console.log(req.body);
         const { usuario, password } = req.body;
 
         // Buscamos el usuario y la contraseña
-        const usuarioEncontrado = await db.collection("users").findOne({
+        const usuarioEncontrado = await db.collection("Usuarios").findOne({
             usuario: usuario,
             password: password
         });
@@ -167,7 +167,7 @@ app.put("/usuarios/:id", async (req, res) => {
     try {
         const db = client.db("comunika");
 
-        const resultado = await db.collection("users").updateOne(
+        const resultado = await db.collection("Usuarios").updateOne(
             { _id: new ObjectId(req.params.id) },
             { $set: req.body }
         );
@@ -190,7 +190,7 @@ app.get("/usuarios/:id", async (req, res) => {
 
         const id = new ObjectId(req.params.id);
 
-        const usuario = await db.collection("users").findOne({
+        const usuario = await db.collection("Usuarios").findOne({
             _id: id
         });
 
@@ -213,14 +213,14 @@ app.delete("/usuarios/:id", async (req, res) => {
     try {
      const db = client.db("comunika");
 const id = new ObjectId(req.params.id);
-const usuario = await db.collection("users").findOne({
+const usuario = await db.collection("Usuarios").findOne({
     _id: id
 });
 
 console.log("ID recibido:", req.params.id);
 console.log("Usuario encontrado:", usuario);
 
-const resultado = await db.collection("users").deleteOne({
+const resultado = await db.collection("Usuarios").deleteOne({
     _id: id
 });
 
