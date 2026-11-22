@@ -25,7 +25,8 @@ function App() {
 
   // Estado para saber si el usuario inició sesión correctamente
   const [autenticado, setAutenticado] = useState(false);
-
+// Estado para conservar el ID real del usuario en MongoDB
+const [usuarioId, setUsuarioId] = useState("");
   // Función para iniciar sesión
   const iniciarSesion = async (e) => {
 
@@ -53,16 +54,17 @@ function App() {
       // Convertimos la respuesta a JSON
       const datos = await respuesta.json();
 
-      // Verificamos si el login fue correcto
-      if (respuesta.ok) {
+   // Verificamos si el login fue correcto
+if (respuesta.ok) {
 
-        setAutenticado(true);
-        setMensaje(datos.mensaje);
+  setAutenticado(true);
+  setUsuarioId(datos.usuario._id);
+  setMensaje(datos.mensaje);
 
-      } else {
+} else {
 
-        setMensaje(datos.error);
-      }
+  setMensaje(datos.error);
+}
 
     } catch (error) {
 
@@ -161,7 +163,10 @@ function App() {
             <CreateResponse />
 
             {/* Módulo para gestionar el perfil */}
-            <Profile cerrarSesion={cerrarSesion} />
+  <Profile
+  cerrarSesion={cerrarSesion}
+  usuarioId={usuarioId}
+/>
 
           </section>
 
