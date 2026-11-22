@@ -22,7 +22,13 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 // Permite recibir información en formato JSON
 app.use(express.json());
+// Ruta donde se encuentra el frontend compilado
+const frontendPath = path.join(__dirname, "frontend", "dist");
 
+// Servimos los archivos del frontend si existen
+if (fs.existsSync(frontendPath)) {
+    app.use(express.static(frontendPath));
+}
 // Configuramos CORS para permitir la comunicación
 // entre el frontend de React y el backend de Express
 app.use(cors({
