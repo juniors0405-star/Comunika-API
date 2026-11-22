@@ -132,8 +132,6 @@ app.post("/login", async (req, res) => {
     // Mostramos en la terminal cuando el frontend intenta iniciar sesión
 console.log("Solicitud de inicio de sesión recibida");
 
-// Mostramos los datos enviados por el formulario
-console.log(req.body);
     try {
         const db = client.db("comunika");
 
