@@ -1,6 +1,9 @@
 // Importamos useState para manejar los datos del formulario
 import { useState } from "react";
 
+// Importamos la dirección del backend
+import { API_URL } from "./config";
+
 // Componente para crear una respuesta a un tema existente
 function CreateResponse() {
 
@@ -26,7 +29,7 @@ function CreateResponse() {
 
       // Enviamos la información al Back-End mediante una solicitud POST
       const respuesta = await fetch(
-        `https://comunika-api.onrender.com/temas/${temaId}/respuestas`,
+        `${API_URL}/temas/${temaId}/respuestas`,
         {
           method: "POST",
 
