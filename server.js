@@ -293,7 +293,7 @@ app.post("/temas", async (req, res) => {
   }
 });
 // Iniciamos todo
-iniciarServidor();
+
 
 // SERVICIO PARA CONSULTAR TODOS LOS TEMAS
 app.get("/temas", async (req, res) => {
@@ -493,3 +493,6 @@ app.delete("/respuestas/:id", async (req, res) => {
     });
   }
 });
+
+// Iniciamos el servidor después de registrar todas las rutas
+iniciarServidor();
