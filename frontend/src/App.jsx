@@ -1,6 +1,9 @@
 // Importamos useState de React para manejar los datos de la pantalla
 import { useState } from "react";
 
+// Importamos la dirección del backend
+import { API_URL } from "./config";
+
 // Importamos los estilos de la aplicación
 import "./App.css";
 
@@ -32,7 +35,7 @@ function App() {
 
       // Enviamos los datos al Back-End
       const respuesta = await fetch(
-        "https://comunika-api.onrender.com/login",
+        `${API_URL}/login`,
         {
           method: "POST",
 
@@ -76,7 +79,7 @@ function App() {
 
       // Enviamos los datos al Back-End
       const respuesta = await fetch(
-        "https://comunika-api.onrender.com/registro",
+        `${API_URL}/registro`,
         {
           method: "POST",
 
