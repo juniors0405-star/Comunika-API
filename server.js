@@ -1,9 +1,15 @@
 // Importamos Express
 const express = require("express");
+
 // Importamos MongoDB
 const { MongoClient, ObjectId } = require("mongodb");
+
 // Importamos CORS
 const cors = require("cors");
+
+// Importamos herramientas para gestionar archivos y carpetas
+const path = require("path");
+const fs = require("fs");
 
 // Cargamos las variables del archivo .env
 require("dotenv").config();
