@@ -157,10 +157,14 @@ console.log("Solicitud de inicio de sesión recibida");
 
         // Verificamos las credenciales
         if (usuarioEncontrado) {
-            return res.json({
-                mensaje: "Autenticación satisfactoria"
-            });
+    return res.json({
+        mensaje: "Autenticación satisfactoria",
+        usuario: {
+            _id: usuarioEncontrado._id,
+            usuario: usuarioEncontrado.usuario
         }
+    });
+}
 
         res.status(401).json({
             error: "Error en la autenticación"
