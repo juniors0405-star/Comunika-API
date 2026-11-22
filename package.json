@@ -1,10 +1,11 @@
 {
   "name": "comunika-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "Sistema de foros web Comunika",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "heroku-postbuild": "npm ci --prefix frontend --include=dev && npm run build --prefix frontend",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
