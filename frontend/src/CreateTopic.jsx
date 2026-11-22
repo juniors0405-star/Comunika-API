@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { API_URL } from "./config";
 
 // Componente encargado de crear nuevos temas en el foro
 function CreateTopic() {
@@ -26,7 +27,7 @@ function CreateTopic() {
 
       // Envía la información del nuevo tema al Back-End mediante una petición POST
       const respuesta = await fetch(
-        "https://comunika-api.onrender.com/temas",
+        `${API_URL}/temas`,
         {
           method: "POST",
 
