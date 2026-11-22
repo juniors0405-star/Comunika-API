@@ -5,10 +5,7 @@ import { useState } from "react";
 import { API_URL } from "./config";
 
 // Componente encargado de gestionar el perfil del usuario
-function Profile({ cerrarSesion }) {
-
-  // Estado para almacenar el ID del usuario
-  const [id, setId] = useState("");
+function Profile({ cerrarSesion, usuarioId }) {
 
   // Estado para almacenar el nuevo nombre de usuario
   const [usuario, setUsuario] = useState("");
@@ -21,24 +18,16 @@ function Profile({ cerrarSesion }) {
 
   // Función para actualizar los datos del perfil
   const actualizarPerfil = async (e) => {
-
-    // Evitamos que el formulario recargue la página
     e.preventDefault();
 
     try {
-
-      // Enviamos los nuevos datos al servicio Back-End
       const respuesta = await fetch(
-        `${API_URL}/usuarios/${id}`,
+        `${API_URL}/usuarios/${usuarioId}`,
         {
           method: "PUT",
-
-          // Indicamos que enviamos información en formato JSON
           headers: {
             "Content-Type": "application/json"
           },
-
-          // Enviamos usuario y contraseña al servidor
           body: JSON.stringify({
             usuario: usuario,
             password: password
@@ -46,15 +35,11 @@ function Profile({ cerrarSesion }) {
         }
       );
 
-      // Convertimos la respuesta del servidor a JSON
       const datos = await respuesta.json();
 
-      // Mostramos el mensaje recibido del servidor
       setMensaje(datos.mensaje || datos.error);
 
     } catch (error) {
-
-      // Mostramos un mensaje si no se puede conectar con el servidor
       setMensaje("No se pudo conectar con el servidor");
     }
   };
@@ -62,21 +47,9 @@ function Profile({ cerrarSesion }) {
   return (
     <section className="bienvenida">
 
-      {/* Título de la sección de perfil */}
       <h2>Mi perfil</h2>
 
-      {/* Formulario para actualizar los datos */}
       <form onSubmit={actualizarPerfil}>
-
-        {/* Campo para identificar al usuario */}
-        <label>ID del usuario</label>
-
-        <input
-          type="text"
-          placeholder="Ingrese el ID del usuario"
-          value={id}
-          onChange={(e) => setId(e.target.value)}
-        />
 
         {/* Campo para modificar el nombre de usuario */}
         <label>Usuario</label>
@@ -98,17 +71,14 @@ function Profile({ cerrarSesion }) {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        {/* Botón para guardar los cambios */}
-        <button type="submit">
+        <button type="submit" disabled={!usuarioId}>
           Actualizar perfil
         </button>
 
       </form>
 
-      {/* Mostramos el resultado de la actualización */}
       {mensaje && <p>{mensaje}</p>}
 
-      {/* Botón para cerrar la sesión */}
       <button type="button" onClick={cerrarSesion}>
         Cerrar sesión
       </button>
