@@ -1,6 +1,9 @@
 // Importamos useState para controlar los datos del formulario
 import { useState } from "react";
 
+// Importamos la dirección del backend
+import { API_URL } from "./config";
+
 // Componente encargado de gestionar el perfil del usuario
 function Profile({ cerrarSesion }) {
 
@@ -26,7 +29,7 @@ function Profile({ cerrarSesion }) {
 
       // Enviamos los nuevos datos al servicio Back-End
       const respuesta = await fetch(
-        `https://comunika-api.onrender.com/usuarios/${id}`,
+        `${API_URL}/usuarios/${id}`,
         {
           method: "PUT",
 
